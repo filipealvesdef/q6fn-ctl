@@ -8,5 +8,6 @@ setup(
         'q6fn_ctl',
     ],
     install_requires=[
+        'wakeonlan~=1.1.6',
     ],
 )
