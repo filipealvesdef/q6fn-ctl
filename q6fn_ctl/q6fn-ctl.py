@@ -7,18 +7,21 @@ import base64
 import os
 from wakeonlan import send_magic_packet
 
-with open('config.json') as config:
+DIR_NAME = os.path.dirname(os.path.realpath(sys.argv[0]))
+CONFIG_PATH = os.path.join(DIR_NAME, 'config.json')
+TOKEN_PATH = os.path.join(DIR_NAME, 'token.txt')
+
+with open(CONFIG_PATH) as config:
     ip, mac, name = json.load(config).values()
 
 port = '8002'
 name = base64.b64encode(b'{name}').decode('utf-8')
-token_path = 'token.txt'
 token = None
 url = f'wss://{ip}:{port}/api/v2/channels/samsung.remote.control?name={name}'
 ssl_context = ssl.SSLContext()
 
-if os.path.exists(token_path):
-    with open(token_path) as f:
+if os.path.exists(TOKEN_PATH):
+    with open(TOKEN_PATH) as f:
         token = f.read()
 
 if token:
@@ -30,7 +33,7 @@ async def send_key(key, token):
 
         if not token:
             token = json.loads(r)['data']['token']
-            with open('token.txt', 'w') as f:
+            with open(TOKEN_PATH, 'w') as f:
                 f.write(token)
 
         payload = json.dumps({
