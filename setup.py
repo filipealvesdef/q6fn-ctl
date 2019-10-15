@@ -10,5 +10,6 @@ setup(
     install_requires=[
         'wakeonlan~=1.1.6',
         'asyncio~=3.4.3',
+        'websockets~=8.0.2',
     ],
 )
