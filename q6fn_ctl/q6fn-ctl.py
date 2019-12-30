@@ -48,8 +48,10 @@ async def send_key(key, token):
         await ws.send(payload)
 
 key = sys.argv[1]
-if key == 'POWERON':
-    send_magic_packet(mac)
-    key = 'KEY_POWER'
-
+if len(sys.argv) == 3 and sys.argv[2] == 'CHECK_ALIVE':
+    down = os.system(f'ping -w 2 {ip} > /dev/null')
+    if down:
+        send_magic_packet(mac)
+        if key == 'KEY_POWER':
+            sys.exit()
 asyncio.get_event_loop().run_until_complete(send_key(key, token))
