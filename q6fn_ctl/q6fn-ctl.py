@@ -15,7 +15,7 @@ with open(CONFIG_PATH) as config:
     ip, mac, name = json.load(config).values()
 
 port = '8002'
-name = base64.b64encode(b'{name}').decode('utf-8')
+name = base64.b64encode(bytes(name, encoding='ascii')).decode('utf-8')
 token = None
 url = f'wss://{ip}:{port}/api/v2/channels/samsung.remote.control?name={name}'
 ssl_context = ssl.SSLContext()
